@@ -94,13 +94,188 @@ void test7(){
     }
 }
 
+// 结构体指针变量
+void test8(){
+    Stu lucy = {100, "lucy"};
+    Stu *p = &lucy;
+    // *p
+    cout<<"结构体指针变量"<<endl;
+    cout<<lucy.num<<" "<<lucy.name<<endl;
+    cout<<(*p).num<<" "<<(*p).name<<endl;
+    cout<<p->num<<" "<<p->name<<endl;
+    cout<<(&lucy)->num<<" "<<(&lucy)->name<<endl;
+}
+void inputStuArray(Stu *arr, int n){
+    cout<<"请输入"<<n<<"个学生信息(num, name)"<<endl;
+    for(int i=0;i<n;i++){
+        cin>>(arr+i)->num>>(arr+i)->name;
+    }
+}
+
+void sortStuArray(Stu *arr, int n){
+    int i=0;
+    for(i=0;i<n-1;i++){
+        for(int j=0;j<n-i-1;j++){
+            if ((arr+j)->num > (arr+j+1)->num) {
+                Stu tmp = *(arr+j);
+                arr[j] = arr[j+1];
+                arr[j+1] = tmp;
+            }
+        }
+    }
+}
+void outputStuArray(Stu *arr, int n){
+    for(int i=0;i<n;i++){
+         cout<<(arr+i)->num<<" "<<arr[i].name<<endl;
+    }
+}
+void test9(){
+    Stu arr[5];
+    memset(arr, 0, sizeof(arr));
+    int n = sizeof(arr)/sizeof(arr[0]);
+
+    // 封装函数获取键盘输入
+    inputStuArray(arr, n);
+    // 排序
+    sortStuArray(arr, n);
+    // 输出
+    outputStuArray(arr, n);
+}
+// 结构体成员指针指向堆区
+struct Stu1
+{
+    int num;
+    char *name;
+};
+void test10(){
+    Stu1 lucy;
+    lucy.num = 100;
+    lucy.name = new char [64];
+    strcpy(lucy.name, "hello world");
+    cout<<lucy.num<<" "<<lucy.name<<endl;
+    delete [] lucy.name;
+}
+
+// 深拷贝浅拷贝
+// 浅拷贝：将结构体变量空间内容 赋值一份 到另一个相同类型的结构体变量空间中
+// 没有指针成员 不会有问题，如果有会存在问题
+void test11(){
+    Stu1 lucy;
+    lucy.num = 100;
+    lucy.name = new char [64];
+    strcpy(lucy.name, "hello world");
+
+    Stu1 bob;
+    bob = lucy;
+
+    cout<<bob.num<<" "<<bob.name<<endl;
+    // 导致同一时间多次释放
+    delete [] lucy.name;
+    delete [] bob.name;
+}
+// 深拷贝：为指针成员 申请独立空间
+void test12(){
+    Stu1 lucy;
+    lucy.num = 100;
+    lucy.name = new char [64];
+    strcpy(lucy.name, "hello world");
+
+    Stu1 bob;
+    bob.num = lucy.num;
+    bob.name = new char[64];
+    strcpy(bob.name, lucy.name);
+
+    cout<<bob.num<<" "<<bob.name<<endl;
+    delete [] lucy.name;
+    delete [] bob.name;
+}
+// 结构体在堆区
+void test13(){
+    // 结构体在堆区
+    Stu1 *p = new Stu1;
+    // 结构体中指针成员指向堆区
+    p->name = new char[32];
+    // 赋值
+    p->num = 100;
+    strcpy(p->name, "hello world");
+    cout<<p->num<<" "<<p->name<<endl;
+    // 释放空间
+    delete [] p->name;
+    delete p;
+}
+// 结构体对齐规则
+struct A{
+    // 相邻位域压缩
+    unsigned char a:2;
+    unsigned char b:2;
+    unsigned char c:4;
+};
+
+void test14(){
+    cout<<"sizeof(A)"<<sizeof(A)<<endl;
+    A ob;
+    // 不能对位域取地址
+    // &ob.a
+    ob.a = 13;  // 13 0101
+    cout<<"ob.a = "<<(int)ob.a<<endl;
+}
+struct B{
+    // 相邻位域压缩
+    unsigned char a:4;
+    unsigned char :0;   // 另起一个存储单元
+    unsigned char b:4;
+};
+struct C{
+    // 相邻位域压缩
+    unsigned char a:4;
+    unsigned char :2;   // 无意义位段
+    unsigned char b:2;
+};
+void test15(){
+    cout<<"sizeof(B)"<<sizeof(B)<<endl;
+    cout<<"sizeof(C)"<<sizeof(C)<<endl;
+}
+// 共用体
+union Data{
+    char a;
+    short b;
+    int c;
+};
+
+void test16(){
+    Data ob;
+    ob.a = 10;
+    ob.b = 20;
+    ob.c = 30;
+    cout<<ob.a + ob.b + ob.c<<endl;
+}
+// 枚举
+enum POKER_COLOR{HONGTAO, MEIHUA, FANGKUAI, HEITAO};
+enum POKER_COLOR1{HONGTAO1, MEIHUA1=10, FANGKUAI1, HEITAO1};
+void test17(){
+    POKER_COLOR pc = HONGTAO;
+    // 默认 0 1 2 3
+    cout<<HONGTAO<<" "<<MEIHUA<<" "<<FANGKUAI<<" "<<HEITAO<<endl;
+    // 修改 依次递增
+    cout<<HONGTAO1<<" "<<MEIHUA1<<" "<<FANGKUAI1<<" "<<HEITAO1<<endl;
+}
 int main(int argc, char *argv[]){
-    test1();
-    test2();
+    // test1();
+    // test2();
     // test3();
-    test4();
-    test5();
-    test6();
-    test7();
+    // test4();
+    // test5();
+    // test6();
+    // test7();
+    // test8();
+    // test9();
+    // test10();
+    // test11();
+    test12();
+    test13();
+    test14();
+    test15();
+    test16();
+    test17();
     return 0;
 }
