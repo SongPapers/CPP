@@ -143,6 +143,22 @@ void test3(){
         cout<<"不相等"<<endl;
     }
 }
+// 类外实现类的成员函数
+class Data1{
+    private:
+        int mA;
+    public:
+        void setA(int a);
+        int getA();
+};
+// 类外实现
+void Data::setA(int a){
+    mA = a;
+}
+
+int Data::getA(){
+    return mA;
+}
 int main(){
     test1();
     test2();
