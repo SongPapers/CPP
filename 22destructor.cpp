@@ -23,7 +23,7 @@ class Data{
             cout<<"析构函数 mA = "<<mA<<endl;
         }
 };
-// Data ob1(10);
+Data ob1(10);
 void test1(){
     Data ob2(20);
     {
@@ -58,7 +58,7 @@ void test2(){
     cout<<ob.name<<endl;
 }
 int main(){
-    // test1();
+    test1();
     test2();
     return 0;
 }
