@@ -77,7 +77,7 @@ void test1(){
 // 不能浅拷贝，会出现内存多次释放的问题，必须深拷贝
 class Data5{
     public:
-        cahr *name;
+        char *name;
     public:
     // 无参构造函数
         Data5(){
@@ -106,8 +106,9 @@ class Data5{
         }
 };
 void test4(){
-    Data5 ob(10);
+    Data5 ob("lucy");
 }
+
 int main(){
     test1();
     return 0;
